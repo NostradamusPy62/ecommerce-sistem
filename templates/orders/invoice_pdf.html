@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factura Electrónica</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; margin: 0; padding: 20px; color: #333; }
+        .invoice-container { max-width: 800px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; }
+        .header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .company-info { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .company-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .company-address { font-size: 12px; margin-bottom: 5px; }
+        .note { font-style: italic; color: #666; margin-top: 5px; }
+        .invoice-details { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .client-info, .invoice-data { width: 48%; }
+        .section-title { font-weight: bold; margin-bottom: 5px; border-bottom: 1px solid #ddd; padding-bottom: 3px; }
+        .info-row { margin-bottom: 3px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; }
+        th, td { border: 1px solid #000; padding: 5px; text-align: center; }
+        th { background-color: #f5f5f5; font-weight: bold; }
+        .totals-table { width: 70%; margin-left: auto; }
+        .totals-table td { text-align: right; padding: 3px 10px; }
+        .total-label { font-weight: bold; }
+        .footer { margin-top: 30px; font-size: 10px; text-align: center; border-top: 1px solid #ddd; padding-top: 10px; }
+        .cdc-code { font-family: monospace; font-size: 11px; margin: 10px 0; letter-spacing: 1px; }
+        .order-note { margin-top: 15px; padding: 10px; background-color: #f9f9f9; border-left: 3px solid #007bff; }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Información de la empresa agrupada -->
+        <div class="company-info">
+            <div class="company-name">TELECOMUNICACIONES S.A.</div>
+            <div class="company-address">Zavalas Cué esq. Herminio Gimenez, Asunción - Paraguay</div>
+            <div class="info-row"><strong>RUC:</strong> 80012345-1</div>
+            <div class="info-row"><strong>Teléfono:</strong> (021) 123-456</div>
+            <div class="info-row"><strong>Email:</strong> facturacion@telecomunicaciones.com.py</div>
+            <div class="note">DE generado en ambiente de prueba - sin valor comercial ni fiscal</div>
+        </div>
+
+        <div class="invoice-details">
+            <div class="client-info">
+                <div class="section-title">Datos del Cliente</div>
+                <div class="info-row"><strong>Nombre:</strong> {{ order.first_name }} {{ order.last_name }}</div>
+                <div class="info-row"><strong>RUC/CI:</strong> {{ order.ruc|default:"N/A" }}</div>
+                <div class="info-row"><strong>Dirección:</strong> {{ order.addres_line_1 }} {{ order.addres_line_2 }}</div>
+                <div class="info-row"><strong>Teléfono:</strong> {{ order.phone }}</div>
+                <div class="info-row"><strong>Email:</strong> {{ order.email }}</div>
+            </div>
+            
+            <div class="invoice-data">
+                <div class="section-title">Datos de la Factura</div>
+                <div class="info-row"><strong>Fecha de emisión:</strong> {{ order.created_at|date:"d/m/Y H:i:s" }}</div>
+                <div class="info-row"><strong>Condición de venta:</strong> Contado</div>
+                <div class="info-row"><strong>Moneda:</strong> Guaraní</div>
+                <div class="info-row"><strong>Tipo de operación:</strong> Venta de mercadería</div>
+                <div class="info-row"><strong>Timbrado:</strong> 1234567</div>
+                <div class="info-row"><strong>Número de Factura:</strong> {{ formatted_invoice_number }}</div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Unidad</th>
+                    <th>Cantidad</th>
+                    <th>Precio unitario</th>
+                    <th>Descuentos</th>
+                    <th>Exentas</th>
+                    <th>$%</th>
+                    <th>10%</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.product.product_name }}</td>
+                    <td>UNI</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product_price|floatformat:0 }} Gs.</td>
+                    <td>0 Gs.</td>
+                    <td>0 Gs.</td>
+                    <td>0 Gs.</td>
+                    <td>{{ item.product_price|floatformat:0 }} Gs.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <table class="totals-table">
+            <tr>
+                <td class="total-label">SUBTOTAL</td>
+                <td>{{ subtotal|floatformat:0 }} Gs.</td>
+            </tr>
+            <tr>
+                <td class="total-label">TOTAL DE LA OPERACIÓN</td>
+                <td>{{ total_operation|floatformat:0 }} Gs.</td>
+            </tr>
+            <tr>
+                <td class="total-label">TOTAL EN GUARANÍES</td>
+                <td>{{ total_guarani|floatformat:0 }} Gs.</td>
+            </tr>
+            <tr>
+                <td class="total-label">LIQUIDACIÓN IVA (10%)</td>
+                <td>{{ liquidation_iva|floatformat:0 }} Gs.</td>
+            </tr>
+            <tr>
+                <td class="total-label">TOTAL IVA</td>
+                <td>{{ total_iva|floatformat:0 }} Gs.</td>
+            </tr>
+        </table>
+
+        {% if order.order_note %}
+        <div class="order-note"><strong>Nota:</strong> {{ order.order_note }}</div>
+        {% endif %}
+
+        <div class="footer">
+            <p>Consulte la validez de esta Factura Electrónica con el número de CDC impreso abajo en:</p>
+            <p>https://ekuatia.set.gov.py/consultas-test/</p>
+            <div class="cdc-code">3 0180 0005 1980 0100 2800 0915 1202 0102 2110 3069 8874</div>
+            <p>ESTE DOCUMENTO ES UNA REPRESENTACIÓN GRÁFICA DE UN DOCUMENTO ELECTRÓNICO (XML)</p>
+        </div>
+    </div>
+</body>
+</html>
