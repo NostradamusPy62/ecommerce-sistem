@@ -141,8 +141,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-    'ecommerce/static',
+    BASE_DIR / 'ecommerce/static',
 ]
 
 MEDIA_URL = '/media/'

@@ -229,36 +229,21 @@ def generate_invoice_pdf(request, order_number):
             'total_iva': order.tax,
         }
         
+        # USAR EL NUEVO TEMPLATE OPTIMIZADO
         html_string = render_to_string('orders/invoice_pdf.html', context)
+        
         pdf_buffer = io.BytesIO()
         
-        pisa_status = pisa.CreatePDF(html_string, dest=pdf_buffer, encoding='UTF-8')
+        pisa_status = pisa.CreatePDF(
+            html_string, 
+            dest=pdf_buffer,
+            encoding='UTF-8'
+        )
         
         if pisa_status.err:
             return HttpResponse('Error al generar el PDF')
         
-        # Enviar PDF por email
-        subject = f'Factura de tu compra - Orden #{order.order_number}'
-        message = f'''
-        Hola {order.first_name},
-        
-        Adjuntamos la factura de tu compra realizada el {order.created_at.strftime("%d/%m/%Y")}.
-        
-        Número de orden: {order.order_number}
-        Total: {order.order_total:,.0f} Gs.
-        
-        ¡Gracias por tu compra!
-        '''
-        email = EmailMessage(
-            subject,
-            message,
-            'no-reply@tudominio.com',
-            [order.email],
-        )
-        email.attach(f'factura_{order.order_number}.pdf', pdf_buffer.getvalue(), 'application/pdf')
-        email.send()
-        
-        # También devolver el PDF para descarga
+        # Enviar por email y devolver para descarga
         pdf_buffer.seek(0)
         response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="factura_{order.order_number}.pdf"'

@@ -7,14 +7,19 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.utils import timezone
 import json
-from reportlab.pdfgen import canvas  # ← AGREGAR ESTA IMPORTACIÓN
+from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import io
+import base64
+from datetime import datetime, timedelta
+from django.db.models import Sum, Count, Avg, F, Q
 
 from .models import ChatMessage
 from .forms import ChatForm
 from .utils import ChatBotUtils
 from store.models import Product, Category
+
+from orders.models import Order, OrderProduct, Payment
 
 class ChatView(View):
     def get(self, request):
@@ -255,3 +260,132 @@ def chat_action(request):
         return view.post(request)
 
     return JsonResponse({"response": "Acción no reconocida."})
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SalesAnalysisView(View):
+    """Vista para análisis de ventas"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            days = data.get('days', 30)
+            analysis_type = data.get('type', 'general')
+            
+            chat_utils = ChatBotUtils()
+            
+            if analysis_type == 'general':
+                analysis_result = chat_utils._get_sales_analysis(days=days)
+            elif analysis_type == 'top_products':
+                analysis_result = chat_utils._get_top_products()
+            elif analysis_type == 'metrics':
+                analysis_result = chat_utils._get_business_metrics()
+            else:
+                analysis_result = chat_utils._get_sales_analysis(days=days)
+            
+            return JsonResponse({
+                'success': True,
+                'analysis': analysis_result,
+                'type': analysis_type,
+                'days': days
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error en análisis de ventas: {str(e)}'
+            })
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GenerateChartView(View):
+    """Vista para generación de gráficos"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            chart_type = data.get('chart_type', 'sales_bar')
+            days = data.get('days', 30)
+            
+            chat_utils = ChatBotUtils()
+            chart_data = None
+            
+            if chart_type == 'sales_bar':
+                chart_data = chat_utils._generate_sales_bar_chart()
+            elif chart_type == 'sales_line':
+                chart_data = chat_utils._generate_sales_line_chart()
+            elif chart_type == 'category_pie':
+                chart_data = chat_utils._generate_category_pie_chart()
+            
+            if chart_data and chart_data.get('buffer'):
+                response = HttpResponse(
+                    chart_data['buffer'].getvalue(), 
+                    content_type='image/png'
+                )
+                response['Content-Disposition'] = f'attachment; filename="chart_{chart_type}_{days}d.png"'
+                return response
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'No se pudo generar el gráfico'
+                })
+                
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error generando gráfico: {str(e)}'
+            })
+
+@method_decorator(csrf_exempt, name='dispatch')
+class BusinessMetricsView(View):
+    """Vista para métricas del negocio"""
+    
+    def get(self, request):
+        try:
+            chat_utils = ChatBotUtils()
+            metrics = chat_utils._get_business_metrics()
+            
+            return JsonResponse({
+                'success': True,
+                'metrics': metrics
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error obteniendo métricas: {str(e)}'
+            })
+
+def get_sales_data(request):
+    """Endpoint para obtener datos de ventas para gráficos externos"""
+    try:
+        days = int(request.GET.get('days', 30))
+        
+        end_date = timezone.now()
+        start_date = end_date - timedelta(days=days)
+        
+        sales_data = Order.objects.filter(
+            created_at__range=[start_date, end_date],
+            status='Completed'
+        ).extra({
+            'date': "DATE(created_at)"
+        }).values('date').annotate(
+            daily_sales=Sum('order_total'),
+            order_count=Count('id')
+        ).order_by('date')
+        
+        data = {
+            'labels': [item['date'].strftime('%Y-%m-%d') for item in sales_data],
+            'sales': [float(item['daily_sales'] or 0) for item in sales_data],
+            'orders': [item['order_count'] for item in sales_data]
+        }
+        
+        return JsonResponse({
+            'success': True,
+            'data': data,
+            'days': days
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Error obteniendo datos de ventas: {str(e)}'
+        })
