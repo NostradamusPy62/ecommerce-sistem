@@ -8,6 +8,9 @@ from django.db.models import Q
 from .forms import ReviewForm
 from django.contrib import messages
 from orders.models import OrderProduct
+from django.http import JsonResponse
+from django.db.models import Min, Max
+
 # Create your views here.
 def store(request, category_slug=None):
 
@@ -27,11 +30,16 @@ def store(request, category_slug=None):
         paged_products = paginator.get_page(page)
         product_count = products.count() 
 
-
+    price_range = Product.objects.filter(is_available=True).aggregate(
+        min_price=Min('price'),
+        max_price=Max('price')
+    )
 
     context = {
         'products': paged_products,
         'product_count': product_count,
+        'min_price': price_range['min_price'] or 0,
+        'max_price': price_range['max_price'] or 100000000,
         
     }
     return render(request, 'store/store.html', context)
@@ -109,3 +117,70 @@ def submit_review(request, product_id):
                 messages.success(request, 'Muchas gracias, tu comentario fue enviado con exito!')
                 return redirect(url)
 
+def get_price_range_api(request):
+    """API para obtener rango de precios"""
+    try:
+        price_range = Product.objects.filter(is_available=True).aggregate(
+            min_price=Min('price'),
+            max_price=Max('price')
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'min_price': price_range['min_price'] or 0,
+            'max_price': price_range['max_price'] or 1000000
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+def filter_products_by_price(request):
+    """Filtra productos por rango de precios"""
+    try:
+        min_price = request.GET.get('min_price', 0)
+        max_price = request.GET.get('max_price', 1000000)
+        category_slug = request.GET.get('category_slug', '')
+        
+        # Convertir a enteros
+        try:
+            min_price = int(min_price)
+            max_price = int(max_price)
+        except (ValueError, TypeError):
+            min_price = 0
+            max_price = 1000000
+        
+        # Construir query base
+        products = Product.objects.filter(
+            is_available=True,
+            price__gte=min_price,
+            price__lte=max_price
+        )
+        
+        # Filtrar por categoría si se especifica
+        if category_slug and category_slug != 'all':
+            products = products.filter(category__slug=category_slug)
+        
+        # Serializar productos
+        products_data = []
+        for product in products:
+            products_data.append({
+                'id': product.id,
+                'name': product.product_name,
+                'price': product.price,
+                'formatted_price': f"Gs. {product.price:,}",
+                'stock': product.stock,
+                'image_url': product.images.url if product.images else '/static/images/default-product.jpg',
+                'category': product.category.category_name,
+                'url': product.get_url(),
+                'add_to_cart_url': f"/cart/add/{product.id}/"
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'products': products_data,
+            'count': len(products_data),
+            'min_price': min_price,
+            'max_price': max_price
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
