@@ -389,3 +389,105 @@ def get_sales_data(request):
             'success': False,
             'error': f'Error obteniendo datos de ventas: {str(e)}'
         })
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GenerateDynamicChartView(View):
+    """Vista para generar gráficos dinámicos basados en consultas"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            user_message = data.get('user_message', '')
+
+            print(f"🎯 Solicitud de gráfico recibida: {user_message}")
+
+            chat_utils = ChatBotUtils()
+            chart_result = chat_utils.generate_dynamic_chart(user_message)
+            
+            print(f"📊 Resultado del gráfico: {chart_result.get('success', False)}")
+            
+            if chart_result['success']:
+                # Guardar información del gráfico en sesión para descarga posterior
+                request.session['last_chart_data'] = {
+                    'chart_type': chart_result['chart_type'],
+                    'title': chart_result['title'],
+                    'image_base64': chart_result['chart_data']['image_base64'],
+                    'user_message': user_message
+                }
+                
+                return JsonResponse({
+                    'success': True,
+                    'has_chart': True,
+                    'analysis': chart_result['analysis'],
+                    'title': chart_result['title'],
+                    'chart_type': chart_result['chart_type']
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'has_chart': False,
+                    'error': chart_result.get('error', 'Error generando gráfico')
+                })
+                
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'has_chart': False,
+                'error': f'Error procesando solicitud de gráfico: {str(e)}'
+            })
+
+class DownloadChartView(View):
+    """Vista para descargar el gráfico generado"""
+    
+    def get(self, request):
+        try:
+            chart_data = request.session.get('last_chart_data')
+            
+            if not chart_data:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'No hay gráfico disponible para descargar'
+                })
+            
+            # Decodificar la imagen base64
+            image_data = base64.b64decode(chart_data['image_base64'])
+            
+            # Crear respuesta con la imagen
+            response = HttpResponse(image_data, content_type='image/png')
+            filename = f"grafico_{chart_data['chart_type']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            
+            return response
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error descargando gráfico: {str(e)}'
+            })
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PreviewChartView(View):
+    """Vista para previsualizar el gráfico en el chat"""
+    
+    def post(self, request):
+        try:
+            chart_data = request.session.get('last_chart_data')
+            
+            if not chart_data:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'No hay gráfico disponible'
+                })
+            
+            return JsonResponse({
+                'success': True,
+                'image_base64': chart_data['image_base64'],
+                'title': chart_data['title'],
+                'chart_type': chart_data['chart_type']
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Error obteniendo previsualización: {str(e)}'
+            })

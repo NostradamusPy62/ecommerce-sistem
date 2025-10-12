@@ -101,6 +101,13 @@
                             </button>
                         </div>
                     </form>
+
+                    <div class="mt-2 text-center">
+                        <button id="viewChartButton" class="btn btn-success btn-sm" disabled onclick="viewChart()">
+                            <span id="chartButtonText">📊 Ver Gráfico</span>
+                        </button>
+                        <small class="text-muted d-block mt-1" id="chartStatus">No hay gráfico disponible</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -433,7 +440,54 @@
 
 </style>
 
+<style>
+/* Estilos para mensajes con gráficos */
+.chart-message .message-content {
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-left: 4px solid #2196f3;
+}
+
+.chart-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.chart-buttons .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Modal de gráficos */
+#chartModal .modal-body img {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+</style>
+
+<style>
+/* Estilos para el botón de gráfico */
+#viewChartButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#viewChartButton:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.chart-status-available {
+    color: #28a745 !important;
+    font-weight: 500;
+}
+</style>
+
 <script>
+// Estado del gráfico
+let currentChartAvailable = false;
+let currentChartData = null;
+
 // Cargar lista de productos al iniciar
 document.addEventListener('DOMContentLoaded', function() {
     loadProductList();
@@ -469,6 +523,9 @@ function sendMessage() {
     const spinner = document.getElementById('spinner');
     const buttonText = document.getElementById('buttonText');
     
+    // Deshabilitar botón de gráfico temporalmente
+    disableChartButton();
+    
     // Mostrar spinner
     spinner.classList.remove('d-none');
     buttonText.textContent = 'Enviando...';
@@ -486,6 +543,9 @@ function sendMessage() {
         if (data.success) {
             addMessageToChat(data.user_message, data.bot_response, data.timestamp);
             document.getElementById('chatForm').reset();
+            
+            // VERIFICAR SI ES UNA CONSULTA DE GRÁFICO - VERSIÓN CORREGIDA
+            checkForChart(data.user_message, data.bot_response);
         } else {
             alert('Error al enviar mensaje: ' + data.error);
         }
@@ -501,6 +561,207 @@ function sendMessage() {
     });
 }
 
+// FUNCIÓN PRINCIPAL PARA DETECTAR GRÁFICOS - VERSIÓN MEJORADA
+function checkForChart(userMessage, botResponse) {
+    console.log("🔍 Verificando gráfico para:", userMessage);
+    
+    // DETECCIÓN MUY AGRESIVA - Cualquier mención de gráfico
+    const userHasChart = userMessage.toLowerCase().includes('gráfico') || 
+                        userMessage.toLowerCase().includes('grafico') ||
+                        userMessage.toLowerCase().includes('chart') ||
+                        userMessage.toLowerCase().includes('estadística') ||
+                        userMessage.toLowerCase().includes('estadisticas');
+    
+    const responseHasChart = botResponse.includes('Gráfico') || 
+                           botResponse.includes('🥧') || 
+                           botResponse.includes('📊') ||
+                           botResponse.includes('📈') ||
+                           botResponse.includes('descargar');
+    
+    console.log("Usuario tiene gráfico:", userHasChart);
+    console.log("Respuesta tiene gráfico:", responseHasChart);
+    
+    if (userHasChart || responseHasChart) {
+        console.log("✅ Detectado gráfico - Generando...");
+        // Habilitar botón inmediatamente
+        enableChartButton("📊 Generando gráfico...");
+        
+        // Generar gráfico
+        setTimeout(() => {
+            generateDynamicChart(userMessage);
+        }, 500);
+    } else {
+        console.log("❌ No se detectó gráfico");
+        disableChartButton();
+    }
+}
+
+// GENERAR GRÁFICO DINÁMICO - VERSIÓN MEJORADA
+function generateDynamicChart(userMessage) {
+    const chartButton = document.getElementById('viewChartButton');
+    const chartStatus = document.getElementById('chartStatus');
+    
+    console.log("🚀 Iniciando generación de gráfico para:", userMessage);
+    
+    // Mostrar estado de carga
+    chartStatus.textContent = "🔄 Generando gráfico...";
+    chartButton.disabled = true;
+    
+    fetch('/chat/api/generate-dynamic-chart/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ user_message: userMessage })
+    })
+    .then(response => {
+        console.log("📡 Respuesta del servidor - Status:", response.status);
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("📊 Datos recibidos del servidor:", data);
+        
+        if (data.success && data.has_chart) {
+            currentChartAvailable = true;
+            currentChartData = data;
+            enableChartButton(`📊 ${data.title}`);
+            chartStatus.textContent = "✅ Gráfico listo - Haz clic para ver";
+            console.log("✅ Gráfico generado exitosamente:", data.title);
+        } else {
+            const errorMsg = data.error || "No se pudo generar el gráfico";
+            disableChartButton();
+            chartStatus.textContent = `❌ ${errorMsg}`;
+            console.log("❌ Error del servidor:", errorMsg);
+        }
+    })
+    .catch(error => {
+        console.error('🚨 Error en la conexión:', error);
+        disableChartButton();
+        chartStatus.textContent = "❌ Error de conexión con el servidor";
+        
+        // Mostrar más detalles después de un tiempo
+        setTimeout(() => {
+            chartStatus.textContent = `❌ Error: ${error.message}`;
+        }, 2000);
+    });
+}
+
+// HABILITAR BOTÓN DE GRÁFICO
+function enableChartButton(title = "📊 Ver Gráfico") {
+    const chartButton = document.getElementById('viewChartButton');
+    const chartStatus = document.getElementById('chartStatus');
+    
+    chartButton.disabled = false;
+    chartButton.innerHTML = `<span>${title}</span>`;
+    chartStatus.textContent = "✅ Gráfico listo - Haz clic para ver";
+    chartStatus.className = "text-success d-block mt-1";
+    console.log("✅ Botón de gráfico habilitado");
+}
+
+// DESHABILITAR BOTÓN DE GRÁFICO
+function disableChartButton() {
+    const chartButton = document.getElementById('viewChartButton');
+    const chartStatus = document.getElementById('chartStatus');
+    
+    currentChartAvailable = false;
+    currentChartData = null;
+    chartButton.disabled = true;
+    chartButton.innerHTML = '<span>📊 Ver Gráfico</span>';
+    chartStatus.textContent = "No hay gráfico disponible";
+    chartStatus.className = "text-muted d-block mt-1";
+    console.log("❌ Botón de gráfico deshabilitado");
+}
+
+// VER GRÁFICO
+function viewChart() {
+    console.log("👁️ Intentando ver gráfico...");
+    
+    if (!currentChartAvailable) {
+        alert("No hay gráfico disponible para ver.");
+        return;
+    }
+    
+    const chartStatus = document.getElementById('chartStatus');
+    chartStatus.textContent = "🔄 Cargando gráfico...";
+    
+    fetch('/chat/api/preview-chart/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showChartModal(data.image_base64, data.title);
+            chartStatus.textContent = "✅ Gráfico listo - Haz clic para ver";
+            console.log("✅ Gráfico cargado en modal");
+        } else {
+            alert('Error al cargar gráfico: ' + data.error);
+            chartStatus.textContent = "❌ Error cargando gráfico";
+            console.log("❌ Error cargando gráfico:", data.error);
+        }
+    })
+    .catch(error => {
+        alert('Error de conexión: ' + error.message);
+        chartStatus.textContent = "❌ Error de conexión";
+        console.log("❌ Error de conexión:", error);
+    });
+}
+
+// MOSTRAR MODAL CON GRÁFICO
+function showChartModal(imageBase64, title) {
+    // Crear modal dinámicamente
+    const modalHtml = `
+        <div class="modal fade" id="chartModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">📊 ${title}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="data:image/png;base64,${imageBase64}" 
+                             alt="${title}" 
+                             style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="downloadChart()">
+                            💾 Descargar PNG
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remover modal existente
+    const existingModal = document.getElementById('chartModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Agregar nuevo modal
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Mostrar modal
+    const chartModal = new bootstrap.Modal(document.getElementById('chartModal'));
+    chartModal.show();
+}
+
+// DESCARGAR GRÁFICO
+function downloadChart() {
+    console.log("💾 Descargando gráfico...");
+    window.open('/chat/api/download-chart/', '_blank');
+}
+
+// FUNCIONES EXISTENTES (mantener igual)
 function addMessageToChat(userMessage, botResponse, timestamp) {
     const chatMessages = document.getElementById('chatMessages');
     
