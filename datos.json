@@ -1,0 +1,1081 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "category",
+    "model": "category"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "account"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "accounts",
+    "model": "userprofile"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "store",
+    "model": "product"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "store",
+    "model": "variation"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "store",
+    "model": "reviwrating"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "carts",
+    "model": "cart"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "carts",
+    "model": "cartitem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "orders",
+    "model": "order"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "orders",
+    "model": "payment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "orders",
+    "model": "orderproduct"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "chat",
+    "model": "chatmessage"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin_panel",
+    "model": "adminlog"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "help_center",
+    "model": "helpcategory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "help_center",
+    "model": "helparticle"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "help_center",
+    "model": "faq"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "kinr39gf57e6o2zu7nqrk778yee0sxq9",
+  "fields": {
+    "session_data": "eyJfc2Vzc2lvbl9pbml0X3RpbWVzdGFtcF8iOjE3NjAyOTkwNDEuNTY4NTE0fQ:1v82C1:ik-78PYMCcB-BjgVS5ogmQEnppsLWZtSb3xi9XhrEoM",
+    "expire_date": "2025-10-26T19:57:21.970Z"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add category",
+    "content_type": [
+      "category",
+      "category"
+    ],
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change category",
+    "content_type": [
+      "category",
+      "category"
+    ],
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete category",
+    "content_type": [
+      "category",
+      "category"
+    ],
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view category",
+    "content_type": [
+      "category",
+      "category"
+    ],
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add account",
+    "content_type": [
+      "accounts",
+      "account"
+    ],
+    "codename": "add_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change account",
+    "content_type": [
+      "accounts",
+      "account"
+    ],
+    "codename": "change_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete account",
+    "content_type": [
+      "accounts",
+      "account"
+    ],
+    "codename": "delete_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view account",
+    "content_type": [
+      "accounts",
+      "account"
+    ],
+    "codename": "view_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user profile",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "add_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user profile",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "change_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user profile",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "delete_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user profile",
+    "content_type": [
+      "accounts",
+      "userprofile"
+    ],
+    "codename": "view_userprofile"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add product",
+    "content_type": [
+      "store",
+      "product"
+    ],
+    "codename": "add_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change product",
+    "content_type": [
+      "store",
+      "product"
+    ],
+    "codename": "change_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete product",
+    "content_type": [
+      "store",
+      "product"
+    ],
+    "codename": "delete_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view product",
+    "content_type": [
+      "store",
+      "product"
+    ],
+    "codename": "view_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add variation",
+    "content_type": [
+      "store",
+      "variation"
+    ],
+    "codename": "add_variation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change variation",
+    "content_type": [
+      "store",
+      "variation"
+    ],
+    "codename": "change_variation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete variation",
+    "content_type": [
+      "store",
+      "variation"
+    ],
+    "codename": "delete_variation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view variation",
+    "content_type": [
+      "store",
+      "variation"
+    ],
+    "codename": "view_variation"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add reviw rating",
+    "content_type": [
+      "store",
+      "reviwrating"
+    ],
+    "codename": "add_reviwrating"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change reviw rating",
+    "content_type": [
+      "store",
+      "reviwrating"
+    ],
+    "codename": "change_reviwrating"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete reviw rating",
+    "content_type": [
+      "store",
+      "reviwrating"
+    ],
+    "codename": "delete_reviwrating"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view reviw rating",
+    "content_type": [
+      "store",
+      "reviwrating"
+    ],
+    "codename": "view_reviwrating"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add cart",
+    "content_type": [
+      "carts",
+      "cart"
+    ],
+    "codename": "add_cart"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change cart",
+    "content_type": [
+      "carts",
+      "cart"
+    ],
+    "codename": "change_cart"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete cart",
+    "content_type": [
+      "carts",
+      "cart"
+    ],
+    "codename": "delete_cart"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view cart",
+    "content_type": [
+      "carts",
+      "cart"
+    ],
+    "codename": "view_cart"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add cart item",
+    "content_type": [
+      "carts",
+      "cartitem"
+    ],
+    "codename": "add_cartitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change cart item",
+    "content_type": [
+      "carts",
+      "cartitem"
+    ],
+    "codename": "change_cartitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete cart item",
+    "content_type": [
+      "carts",
+      "cartitem"
+    ],
+    "codename": "delete_cartitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view cart item",
+    "content_type": [
+      "carts",
+      "cartitem"
+    ],
+    "codename": "view_cartitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add order",
+    "content_type": [
+      "orders",
+      "order"
+    ],
+    "codename": "add_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change order",
+    "content_type": [
+      "orders",
+      "order"
+    ],
+    "codename": "change_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete order",
+    "content_type": [
+      "orders",
+      "order"
+    ],
+    "codename": "delete_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view order",
+    "content_type": [
+      "orders",
+      "order"
+    ],
+    "codename": "view_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add payment",
+    "content_type": [
+      "orders",
+      "payment"
+    ],
+    "codename": "add_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change payment",
+    "content_type": [
+      "orders",
+      "payment"
+    ],
+    "codename": "change_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete payment",
+    "content_type": [
+      "orders",
+      "payment"
+    ],
+    "codename": "delete_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view payment",
+    "content_type": [
+      "orders",
+      "payment"
+    ],
+    "codename": "view_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add order product",
+    "content_type": [
+      "orders",
+      "orderproduct"
+    ],
+    "codename": "add_orderproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change order product",
+    "content_type": [
+      "orders",
+      "orderproduct"
+    ],
+    "codename": "change_orderproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete order product",
+    "content_type": [
+      "orders",
+      "orderproduct"
+    ],
+    "codename": "delete_orderproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view order product",
+    "content_type": [
+      "orders",
+      "orderproduct"
+    ],
+    "codename": "view_orderproduct"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Mensaje de chat",
+    "content_type": [
+      "chat",
+      "chatmessage"
+    ],
+    "codename": "add_chatmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Mensaje de chat",
+    "content_type": [
+      "chat",
+      "chatmessage"
+    ],
+    "codename": "change_chatmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Mensaje de chat",
+    "content_type": [
+      "chat",
+      "chatmessage"
+    ],
+    "codename": "delete_chatmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Mensaje de chat",
+    "content_type": [
+      "chat",
+      "chatmessage"
+    ],
+    "codename": "view_chatmessage"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Registro de administración",
+    "content_type": [
+      "admin_panel",
+      "adminlog"
+    ],
+    "codename": "add_adminlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Registro de administración",
+    "content_type": [
+      "admin_panel",
+      "adminlog"
+    ],
+    "codename": "change_adminlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Registro de administración",
+    "content_type": [
+      "admin_panel",
+      "adminlog"
+    ],
+    "codename": "delete_adminlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Registro de administración",
+    "content_type": [
+      "admin_panel",
+      "adminlog"
+    ],
+    "codename": "view_adminlog"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add help category",
+    "content_type": [
+      "help_center",
+      "helpcategory"
+    ],
+    "codename": "add_helpcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change help category",
+    "content_type": [
+      "help_center",
+      "helpcategory"
+    ],
+    "codename": "change_helpcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete help category",
+    "content_type": [
+      "help_center",
+      "helpcategory"
+    ],
+    "codename": "delete_helpcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view help category",
+    "content_type": [
+      "help_center",
+      "helpcategory"
+    ],
+    "codename": "view_helpcategory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add help article",
+    "content_type": [
+      "help_center",
+      "helparticle"
+    ],
+    "codename": "add_helparticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change help article",
+    "content_type": [
+      "help_center",
+      "helparticle"
+    ],
+    "codename": "change_helparticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete help article",
+    "content_type": [
+      "help_center",
+      "helparticle"
+    ],
+    "codename": "delete_helparticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view help article",
+    "content_type": [
+      "help_center",
+      "helparticle"
+    ],
+    "codename": "view_helparticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add faq",
+    "content_type": [
+      "help_center",
+      "faq"
+    ],
+    "codename": "add_faq"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change faq",
+    "content_type": [
+      "help_center",
+      "faq"
+    ],
+    "codename": "change_faq"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete faq",
+    "content_type": [
+      "help_center",
+      "faq"
+    ],
+    "codename": "delete_faq"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view faq",
+    "content_type": [
+      "help_center",
+      "faq"
+    ],
+    "codename": "view_faq"
+  }
+}
+]

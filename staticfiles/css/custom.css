@@ -1,73 +1,37 @@
 /* ==========================================
-   SISTEMA DE RATING MEJORADO - ADAPTADO AL HTML EXISTENTE
+   SISTEMA DE RATING MEJORADO - VERSIÓN AJUSTADA
    ========================================== */
 
-/* Variables para el rating */
+/* Variables */
 :root {
-  --rating-size: clamp(1.5rem, 3vw, 2rem);
-  --rating-size-sm: clamp(1rem, 2vw, 1.5rem);
-  --rating-size-lg: clamp(2rem, 4vw, 3rem);
-  --rating-gap: clamp(0.1rem, 0.5vw, 0.2rem);
+  --rating-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  --rating-size-sm: clamp(1rem, 2vw, 1.25rem);
+  --rating-size-lg: clamp(1.75rem, 3vw, 2.5rem);
+  --rating-gap: 0.05rem;
   --rating-color-empty: #e5e5e5;
   --rating-color-filled: #ffb503;
   --rating-color-hover: #ffc933;
   --rating-color-active: #cc9000;
-  --rating-transition: all 0.2s ease;
+  --rating-transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Contenedores de rating existentes en tu HTML */
-.rating-start {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--rating-gap);
-  margin-bottom: 0.5rem;
-}
+/* ========================
+   CONTENEDOR INTERACTIVO
+   ======================== */
 
-/* Estilos para las estrellas Font Awesome */
-.rating-start i.fa {
-  font-size: var(--rating-size);
-  color: var(--rating-color-empty);
-  transition: var(--rating-transition);
-  line-height: 1;
-}
-
-/* Estrellas llenas */
-.rating-start i.fa-star {
-  color: var(--rating-color-filled);
-}
-
-/* Media estrella */
-.rating-start i.fa-star-half-o {
-  color: var(--rating-color-filled);
-  position: relative;
-}
-
-.rating-start i.fa-star-half-o::before {
-  color: var(--rating-color-filled);
-}
-
-/* Estrellas vacías */
-.rating-start i.fa-star-o {
-  color: var(--rating-color-empty);
-}
-
-/* ==========================================
-   RATING INTERACTIVO PARA FORMULARIO
-   ========================================== */
-
-/* Contenedor principal del rating interactivo */
 .rate {
   display: inline-flex;
   flex-direction: row-reverse;
   align-items: center;
   gap: var(--rating-gap);
   border: 0;
-  padding: 0.25rem;
+  padding: 0;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
-/* Ocultar inputs radio nativos */
+/* Ocultar inputs */
 .rate > input {
   position: absolute;
   opacity: 0;
@@ -76,7 +40,10 @@
   pointer-events: none;
 }
 
-/* Estilo base para las estrellas del formulario */
+/* ========================
+   ESTRELLAS
+   ======================== */
+
 .rate > label {
   cursor: pointer;
   font-size: var(--rating-size);
@@ -84,154 +51,85 @@
   transition: var(--rating-transition);
   margin: 0;
   position: relative;
+  display: inline-block;
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
 }
 
-/* Usar Font Awesome para el formulario */
+/* Icono de estrella completa */
 .rate > label::before {
   font-family: "Font Awesome 5 Free", "Font Awesome 6 Free";
   font-weight: 900;
   content: "\f005"; /* fa-star */
   display: block;
-  transition: var(--rating-transition);
 }
 
-/* Media estrella en formulario */
+/* Media estrella */
 .rate > label.half::before {
   content: "\f089"; /* fa-star-half */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  text-align: center;
 }
 
-/* Estados: Hover en el formulario */
-.rate > label:hover {
-  color: var(--rating-color-hover);
-  transform: scale(1.1);
+/* Para que las medias estrellas estén unidas visualmente */
+.rate > label.half {
+  margin-right: -0.35rem; /* solapa la media estrella */
 }
 
+/* ========================
+   INTERACCIÓN
+   ======================== */
+
+/* Hover */
 .rate > label:hover,
 .rate > label:hover ~ label {
   color: var(--rating-color-hover);
+  transform: scale(1.05);
 }
 
-/* Estados: Estrellas seleccionadas en formulario */
+/* Checked */
 .rate > input:checked ~ label {
   color: var(--rating-color-filled);
 }
 
+/* Checked + Hover */
 .rate > input:checked ~ label:hover,
 .rate > input:checked ~ label:hover ~ label {
   color: var(--rating-color-active);
 }
 
-/* Focus para accesibilidad */
+/* Focus */
 .rate > input:focus-visible ~ label {
   outline: 2px solid var(--rating-color-filled);
   outline-offset: 2px;
   border-radius: 0.25rem;
 }
 
-/* ==========================================
-   ESTILOS PARA LAS RESEÑAS EXISTENTES
-   ========================================== */
-
-/* Rating en las reseñas de clientes */
-.box .rating-start {
-  margin-bottom: 0.25rem;
-}
-
-.box .rating-start i.fa {
-  font-size: var(--rating-size-sm);
-}
-
-/* ==========================================
-   CONTENEDOR CON CONTADOR (para el promedio)
-   ========================================== */
-
-.rating-container {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-
-.rating-value {
-  font-size: 0.875rem;
-  color: #737373;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.rating-count {
-  font-size: 0.75rem;
-  color: #a3a3a3;
-}
-
-/* ==========================================
-   VARIANTES DE TAMAÑO
-   ========================================== */
-
-.rating-start.rating-small i.fa {
-  font-size: var(--rating-size-sm);
-}
-
-.rating-start.rating-large i.fa {
-  font-size: var(--rating-size-lg);
-}
-
-/* ==========================================
+/* ========================
    RESPONSIVE
-   ========================================== */
+   ======================== */
 
 @media (max-width: 640px) {
-  .rating-start i.fa {
-    font-size: var(--rating-size-sm);
+  :root {
+    --rating-size: 1.25rem;
   }
-  
   .rate > label {
-    min-width: 48px;
-    min-height: 48px;
-    font-size: var(--rating-size-sm);
-  }
-  
-  .rating-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-  .rate > label {
-    min-width: 44px;
-    min-height: 44px;
+    font-size: var(--rating-size);
   }
 }
 
 @media (min-width: 1025px) {
   .rate > label:hover {
-    transform: scale(1.15);
+    transform: scale(1.08);
   }
 }
 
-/* Reducir animaciones si el usuario lo prefiere */
-@media (prefers-reduced-motion: reduce) {
-  .rating-start i.fa,
-  .rate > label {
-    transition: color 0.1s;
-  }
-  
-  .rate > label:hover {
-    transform: none;
-  }
-}
-
-/* ==========================================
+/* ========================
    DARK MODE
-   ========================================== */
+   ======================== */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -240,24 +138,17 @@
     --rating-color-hover: #ffd966;
     --rating-color-active: #e6b800;
   }
-  
-  .rating-value {
-    color: #a3a3a3;
-  }
-  
-  .rating-count {
-    color: #737373;
-  }
 }
 
-/* ==========================================
-   ALTO CONTRASTE
-   ========================================== */
+/* ========================
+   REDUCIR ANIMACIONES
+   ======================== */
 
-@media (prefers-contrast: high) {
-  :root {
-    --rating-color-empty: #999999;
-    --rating-color-filled: #ff9900;
-    --rating-color-hover: #ffaa00;
+@media (prefers-reduced-motion: reduce) {
+  .rate > label {
+    transition: color 0.1s ease;
+  }
+  .rate > label:hover {
+    transform: none;
   }
 }

@@ -15,6 +15,7 @@
   --color-border-dark: #9e9e9e;
   --color-shadow: rgba(0, 0, 0, 0.08);
   --color-shadow-dark: rgba(0, 0, 0, 0.15);
+  --color-input-text: #000000;
   
   /* Colores de estado */
   --color-success: #27ae60;
@@ -469,7 +470,7 @@ a:hover, a:focus {
   border-radius: var(--border-radius);
   background-color: var(--color-bg);
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
-  color: var(--color-text);
+  color: var(--color-input-text);
 }
 
 .form-control:focus {
@@ -757,6 +758,8 @@ a:hover, a:focus {
 .input-spinner .form-control {
   text-align: center;
   margin: 0 var(--space-xs);
+  color: var(--color-input-text) !important;
+  background-color: var(--color-bg) !important;
 }
 
 /* ----- Filtros ----- */
@@ -972,6 +975,14 @@ a:hover, a:focus {
 .text-warning { color: var(--color-warning) !important; }
 .text-danger { color: var(--color-danger) !important; }
 .text-info { color: var(--color-info) !important; }
+
+#cart-quantity {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #dee2e6 !important;
+    font-weight: 500;
+    text-align: center;
+}
 
 /* ===== RESPONSIVIDAD ===== */
 
