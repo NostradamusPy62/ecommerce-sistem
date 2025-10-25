@@ -26,18 +26,21 @@ RUN apt-get update && apt-get install -y \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements.txt
+# Copiar requirements.txt primero para aprovechar el caché de Docker
 COPY requirements.txt .
 
 # Instalar dependencias de Python
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto del proyecto
+# Copiar el resto del proyecto (incluyendo entrypoint.sh)
 COPY . .
+
+# *** AHORA SÍ: Dar permisos de ejecución al script de arranque ***
+RUN chmod +x /app/entrypoint.sh
 
 # Exponer puerto de Django
 EXPOSE 8000
 
-# Comando por defecto
+# Comando por defecto (aunque Railway lo sobrescribe con el Start Command)
 CMD ["gunicorn", "ecommerce.wsgi:application", "--bind", "0.0.0.0:8000"]
