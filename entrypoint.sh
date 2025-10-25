@@ -9,4 +9,4 @@ echo "Aplicando migraciones..."
 python manage.py migrate
 
 echo "Iniciando Gunicorn..."
-gunicorn ecommerce.wsgi:application --bind 0.0.0.0:$PORT --workers 2
+gunicorn ecommerce.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --spew
