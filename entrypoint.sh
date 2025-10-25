@@ -12,4 +12,4 @@ python manage.py migrate
 
 # Iniciar el servidor Gunicorn
 echo "Iniciando Gunicorn en el puerto $PORT..."
-gunicorn ecommerce.wsgi:application -w 1 --bind 0.0.0.0:$PORT
+gunicorn ecommerce.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --log-level=debug --log-file=-
