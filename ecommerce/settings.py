@@ -166,3 +166,25 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/accounts/login/'
+
+# settings.py - AÑADIR AL FINAL DEL ARCHIVO
+
+# --- CONFIGURACIÓN DE SEGURIDAD PARA PRODUCCIÓN DETRÁS DE UN PROXY (RAILWAY) ---
+# Le decimos a Django que confíe en el proxy de Railway
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Redirecciona todo el tráfico HTTP a HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Asegura que la cookie de sesión solo se envíe por HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Asegura que la cookie CSRF solo se envíe por HTTPS
+CSRF_COOKIE_SECURE = True
+
+# Activa HSTS (Strict Transport Security) para mayor seguridad. 
+# Le dice al navegador que solo se comunique con tu sitio a través de HTTPS.
+# Un valor común es 31536000 (un año).
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
