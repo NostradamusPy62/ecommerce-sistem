@@ -318,13 +318,6 @@ article:after,
   transition: 0.5s;
 }
 
-.bg-pattern {
-  /* La siguiente línea está corregida y combina el gradiente y la imagen correctamente */
-  background-image: linear-gradient(135deg, #3167eb, #545454), url("../images/banners/bg-pattern.svg");
-  background-size: auto, cover; /* Cambié el orden para que coincida con background-image */
-  background-repeat: repeat, no-repeat; /* Cambié el orden */
-  background-position: 50% 50%, 0px 0px; /* Cambié el orden */
-}
 
 .bg-img {
   overflow: hidden;
