@@ -23,7 +23,7 @@ GOOGLE_AI_API_KEY = config('GOOGLE_AI_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-#ALLOWED_HOSTS = ['davborn.shop', 'www.davborn.shop', '127.0.0.1', 'localhost']
+# ESTA ES LA LÍNEA CORRECTA
 ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
 
 # Application definition
