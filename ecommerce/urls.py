@@ -19,7 +19,7 @@ from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
-
+from django.http import HttpResponse
 
 urlpatterns = [
     path('supersecurelogin/', admin.site.urls),
@@ -31,5 +31,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('admin-panel/', include('admin_panel.urls')),
     path('ayuda/', include('help_center.urls')),
+
+    path('health/', lambda request: HttpResponse("OK")),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
