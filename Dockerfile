@@ -36,11 +36,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar el resto del proyecto (incluyendo entrypoint.sh)
 COPY . .
 
-# *** AHORA SÍ: Dar permisos de ejecución al script de arranque ***
-RUN chmod +x /app/entrypoint.sh
+# *** SOLUCIÓN FINAL: Limpia los finales de línea de Windows y da permisos ***
+RUN sed -i 's/\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh
 
 # Exponer puerto de Django
 EXPOSE 8000
 
-# Comando por defecto (aunque Railway lo sobrescribe con el Start Command)
-CMD ["gunicorn", "ecommerce.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Comando por defecto (sobrescrito por Railway, pero es buena práctica)
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
