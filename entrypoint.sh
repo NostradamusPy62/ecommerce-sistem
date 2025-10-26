@@ -12,4 +12,4 @@ python manage.py migrate
 
 # Iniciar el servidor uWSGI
 echo "Iniciando uWSGI..."
-uwsgi --ini uwsgi.ini
+exec uwsgi --ini uwsgi.ini
