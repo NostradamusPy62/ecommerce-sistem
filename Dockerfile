@@ -26,21 +26,24 @@ RUN apt-get update && apt-get install -y \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements.txt primero para aprovechar el caché de Docker
+# Copiar requirements.txt primero para aprovechar el caché
 COPY requirements.txt .
 
 # Instalar dependencias de Python
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto del proyecto (incluyendo entrypoint.sh)
+# Copiar el resto del proyecto
 COPY . .
 
-# *** SOLUCIÓN FINAL: Limpia los finales de línea de Windows y da permisos ***
+# Ajustar permisos del entrypoint
 RUN sed -i 's/\r$//' ./entrypoint.sh && chmod +x ./entrypoint.sh
 
-# Exponer puerto de Django
+# Recolectar archivos estáticos para producción
+RUN python manage.py collectstatic --noinput
+
+# Exponer puerto (Railway usará $PORT)
 EXPOSE 8000
 
-# Comando por defecto (sobrescrito por Railway, pero es buena práctica)
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+# Comando final con Gunicorn
+CMD ["gunicorn", "ecommerce.wsgi:application", "--bind", "0.0.0.0:${PORT:-8000}", "--timeout", "120"]

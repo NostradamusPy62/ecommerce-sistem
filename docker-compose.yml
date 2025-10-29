@@ -9,14 +9,14 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3306"   # Evita conflictos con MySQL local
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
   web:
     build: .
     container_name: django_app
-    command: sh ./wait-for-it.sh db python manage.py runserver 0.0.0.0:8000
+    command: sh ./wait-for-it.sh db gunicorn ecommerce.wsgi:application --bind 0.0.0.0:8000 --timeout 120
     ports:
       - "8000:8000"
     volumes:
