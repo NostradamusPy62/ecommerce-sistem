@@ -72,26 +72,14 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 AUTH_USER_MODEL = 'accounts.Account'
 
 
-# Database - CONFIGURACIÓN MEJORADA PARA RAILWAY Y LOCAL
+# Database - CONFIGURACIÓN CORREGIDA PARA POSTGRESQL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME', default='sistemaE3'),
-        'USER': config('DB_USER', default='root'),
-        'PASSWORD': config('DB_PASSWORD', default='admin123'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='3306'),
-    }
-}
-
-# SOBREESCRIBIR con DATABASE_URL de Railway si existe
-DATABASE_URL = config('DATABASE_URL', default=None)
-if DATABASE_URL:
-    DATABASES['default'] = dj_database_url.config(
-        default=DATABASE_URL,
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
         conn_max_age=600,
         conn_health_checks=True,
     )
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},

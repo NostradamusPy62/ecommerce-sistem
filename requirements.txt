@@ -7,9 +7,8 @@ python-decouple==3.8
 django-session-timeout==0.1.0
 django-storages==1.13.2
 
-# BASES DE DATOS
+# BASES DE DATOS - SOLO POSTGRESQL
 psycopg2-binary==2.9.7
-pymysql==1.1.0
 
 # IMÁGENES, GRÁFICOS Y MULTIMEDIA
 Pillow==10.0.1
