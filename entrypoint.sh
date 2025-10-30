@@ -3,7 +3,7 @@ set -e
 
 echo "🚀 Iniciando despliegue de Django Ecommerce..."
 
-# Crear directorios necesarios si no existen
+# Crear directorios necesarios
 mkdir -p staticfiles media static
 
 echo "🧱 Aplicando migraciones..."
@@ -14,15 +14,19 @@ python manage.py collectstatic --noinput
 
 echo "✅ Despliegue completado!"
 
-# Si PORT no está definido, usar 8000 por defecto
+# CONFIGURACIÓN ESPECÍFICA PARA RAILWAY
 PORT=${PORT:-8000}
+echo "🚀 Iniciando servidor en puerto $PORT..."
 
-echo "🚀 Iniciando servidor Gunicorn en el puerto $PORT..."
-exec gunicorn ecommerce.wsgi:application \
+# Ejecutar Gunicorn SIN exec para mejor manejo de señales
+gunicorn ecommerce.wsgi:application \
     --bind 0.0.0.0:$PORT \
-    --workers 3 \
+    --workers 2 \
     --worker-class sync \
     --timeout 120 \
-    --log-level info \
+    --keepalive 5 \
+    --preload \
     --access-logfile - \
-    --error-logfile -
+    --error-logfile - \
+    --log-level info \
+    --capture-output

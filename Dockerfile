@@ -43,5 +43,5 @@ RUN chmod +x ./entrypoint.sh
 # Exponer puerto (Railway usa variable PORT)
 EXPOSE 8000
 
-# Usar el entrypoint script
-CMD ["./entrypoint.sh"]
+# Temporal para debugging
+CMD python railway_debug.py
