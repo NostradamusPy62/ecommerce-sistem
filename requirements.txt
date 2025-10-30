@@ -1,4 +1,4 @@
-# NÚCLEO DJANGO Y SERVIDOR
+# NÚCLEO DJANGO
 Django==4.2.7
 gunicorn==21.2.0
 whitenoise==6.7.0
@@ -10,11 +10,9 @@ django-storages==1.13.2
 # BASES DE DATOS
 psycopg2-binary==2.9.7
 
-# IMÁGENES Y MULTIMEDIA
+# IMÁGENES Y PDF
 Pillow==10.0.1
-qrcode==8.2
-
-# GENERACIÓN DE PDFs (versiones simplificadas)
+xhtml2pdf==0.2.13
 reportlab==4.0.4
 pypdf==3.17.0
 
@@ -23,7 +21,7 @@ google-generativeai==0.3.2
 google-api-python-client==2.108.0
 google-auth==2.23.0
 
-# DATA SCIENCE (si realmente las necesitas)
+# DATA SCIENCE
 pandas==2.3.3
 numpy==2.2.6
 
@@ -37,7 +35,7 @@ boto3==1.28.62
 # WEB
 requests==2.31.0
 
-# EL RESTO MÍNIMO
+# DEPENDENCIAS BÁSICAS
 asgiref==3.7.2
 sqlparse==0.4.4
 python-dateutil==2.8.2

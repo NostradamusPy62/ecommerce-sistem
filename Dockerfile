@@ -5,20 +5,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# INSTALAR TODAS LAS DEPENDENCIAS DEL SISTEMA NECESARIAS
+# SOLO DEPENDENCIAS ESENCIALES
 RUN apt-get update && apt-get install -y \
     gcc \
     python3-dev \
-    pkg-config \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libgdk-pixbuf-2.0-dev \
-    libffi-dev \
-    libjpeg-dev \
-    libgif-dev \
-    libxml2-dev \
-    libxslt-dev \
-    libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
