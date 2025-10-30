@@ -1,6 +1,3 @@
-import pymysql
-pymysql.install_as_MySQLdb()
-
 import dj_database_url
 from pathlib import Path
 import os
@@ -76,7 +73,6 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 
 # Database - CONFIGURACIÓN MEJORADA PARA RAILWAY Y LOCAL
-# Configuración por defecto para desarrollo local (MySQL)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -88,7 +84,7 @@ DATABASES = {
     }
 }
 
-# SOBREESCRIBIR con DATABASE_URL de Railway si existe (prioridad máxima)
+# SOBREESCRIBIR con DATABASE_URL de Railway si existe
 DATABASE_URL = config('DATABASE_URL', default=None)
 if DATABASE_URL:
     DATABASES['default'] = dj_database_url.config(
