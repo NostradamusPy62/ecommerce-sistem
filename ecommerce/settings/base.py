@@ -96,10 +96,18 @@ USE_TZ = True
 # Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
+
+# Verificar que los directorios existen antes de agregarlos
+STATICFILES_DIRS = []
+static_dirs = [
     BASE_DIR / 'static',
     BASE_DIR / 'ecommerce/static',
 ]
+
+for static_dir in static_dirs:
+    if static_dir.exists():
+        STATICFILES_DIRS.append(static_dir)
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'

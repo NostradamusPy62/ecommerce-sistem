@@ -1,25 +1,28 @@
 #!/usr/bin/env python
 import os
-import sys
+import django
+from django.core.wsgi import get_wsgi_application
 
-if __name__ == "__main__":
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
+
+try:
+    application = get_wsgi_application()
+    print("✅ WSGI application loaded successfully!")
     
-    # Debug info
-    print("=== RAILWAY DEBUG INFO ===")
-    print(f"PORT: {os.environ.get('PORT')}")
-    print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
-    print(f"ALLOWED_HOSTS: {os.environ.get('DJANGO_ALLOWED_HOSTS')}")
-    print("==========================")
+    # Verificar base de datos
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT 1")
+    print("✅ Database connection successful!")
     
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError("Couldn't import Django.") from exc
+    # Verificar static files
+    from django.conf import settings
+    print(f"✅ DEBUG mode: {settings.DEBUG}")
+    print(f"✅ ALLOWED_HOSTS: {settings.ALLOWED_HOSTS}")
+    print(f"✅ Static root: {settings.STATIC_ROOT}")
+    print("✅ All checks passed!")
     
-    # Run development server
-    from django.core.management.commands.runserver import Command as Runserver
-    Runserver.default_port = os.environ.get('PORT', '8000')
-    Runserver.default_addr = '0.0.0.0'
-    
-    execute_from_command_line(['manage.py', 'runserver', '0.0.0.0:8000'])
+except Exception as e:
+    print(f"❌ ERROR: {e}")
+    import traceback
+    traceback.print_exc()
