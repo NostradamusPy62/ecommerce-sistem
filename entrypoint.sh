@@ -3,11 +3,8 @@ set -e
 
 echo "🚀 Iniciando despliegue de Django Ecommerce..."
 
-# Esperar a que la base de datos esté lista (solo para desarrollo local)
-if [ "$DATABASE_URL" != "sqlite:///db.sqlite3" ]; then
-    echo "⏳ Esperando base de datos..."
-    sleep 3
-fi
+# Crear directorios necesarios si no existen
+mkdir -p staticfiles media static
 
 echo "🧱 Aplicando migraciones..."
 python manage.py migrate --noinput
